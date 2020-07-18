@@ -6,16 +6,17 @@ function fetchAndVisualizeData() {
 }
 
 function showData() {
-    fetch("./data.json")
+  const season = document.getElementById("seasons1").value;
+    fetch("/e?season="+season)
       .then(r => r.json())
-      .then(visualizeExtraRunsConcededByEachTeam);
+      .then(response=> {visualizeExtraRunsConcededByEachTeam(response)});
 } 
 
-function visualizeExtraRunsConcededByEachTeam(data){
-  const season = document.getElementById("seasons1").value;
+function visualizeExtraRunsConcededByEachTeam(extraRunsConcededByEachTeam){
+  const season = Object.keys(extraRunsConcededByEachTeam);
   const seriesData = [];
-  for (let year in data.extraRunsConcededByEachTeam[season]) {
-    seriesData.push([year, data.extraRunsConcededByEachTeam[season][year]]);
+  for (let year in extraRunsConcededByEachTeam[season]) {
+    seriesData.push([year, extraRunsConcededByEachTeam[season][year]]);
   }
 
   Highcharts.chart("container_userInput", {
@@ -47,17 +48,19 @@ function visualizeExtraRunsConcededByEachTeam(data){
   });
 }
 
+
 function showData1() {
-    fetch("./data.json")
+  const year = document.getElementById("seasons2").value;
+    fetch("/e?year="+year)
       .then(r => r.json())
-      .then(visualizeTopTenEconomicalBowlersPerYear);
+      .then(response=> {visualizeTopTenEconomicalBowlersPerYear(response)});
 }
 
-function visualizeTopTenEconomicalBowlersPerYear(data){
-  const season = document.getElementById("seasons2").value;
+function visualizeTopTenEconomicalBowlersPerYear(topTenEconomicalBowlersPerYear){
+  const season = Object.keys(topTenEconomicalBowlersPerYear);
   let seriesData = [];
-  for (let year in data.topTenEconomicalBowlersPerYear[season]) {
-    seriesData.push([year, data.topTenEconomicalBowlersPerYear[season][year].economuRate]);
+  for (let year in topTenEconomicalBowlersPerYear[season]) {
+    seriesData.push([year, topTenEconomicalBowlersPerYear[season][year].economuRate]);
   }
   seriesData = seriesData.sort((a, b) => a[1] - b[1]).slice(0, 11);
 
