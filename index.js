@@ -18,7 +18,7 @@ const JSON_OUTPUT_FILE_PATH = "./public/data.json";
 
 const app = express();
 const PORT = process.env.PORT || 2000
-
+let extraRuns={}, topEconomicalBowlers={};
 function main() {
     csv()
     .fromFile(MATCHES_FILE_PATH)
@@ -37,6 +37,8 @@ function main() {
           result.extraRunsConcededByEachTeam = extraRunsConcededByEachTeam(deliveries, matches, result.matchesPlayedPerYear);
           result.topTenEconomicalBowlersPerYear = topTenEconomicalBowlersPerYear(deliveries, matches, result.matchesPlayedPerYear);
           result.tenEconomicalBowlersOf2015 = tenEconomicalBowlersOf2015(deliveries, matches);
+          extraRuns=result.extraRunsConcededByEachTeam;
+          topEconomicalBowlers=result.topTenEconomicalBowlersPerYear;
           saveMatchesPlayedPerYear(result);
           
           
@@ -54,8 +56,6 @@ function saveMatchesPlayedPerYear(result) {
     mostWins: result.mostWins,
     matchesWonByEachTeam: result.matchesWonByEachTeam,
     extraRunsConcededByEachTeamIn2016: result.extraRunsConcededByEachTeamIn2016,
-    extraRunsConcededByEachTeam: result.extraRunsConcededByEachTeam,
-    topTenEconomicalBowlersPerYear: result.topTenEconomicalBowlersPerYear,
     tenEconomicalBowlersOf2015: result.tenEconomicalBowlersOf2015,
     tossWinningTeamPerYear: result.tossWinningTeamPerYear
   };
@@ -68,6 +68,25 @@ function saveMatchesPlayedPerYear(result) {
 }
 
 main();
+
+app.get('/e', function(req, res){
+  if(req.query.season){
+  const season=req.query.season;
+  var tryFetch = {[season]: extraRuns[season]};
+  res.json(tryFetch)
+  }else{
+  const year=req.query.year;
+  var tryFetch = {[year]: topEconomicalBowlers[year]};
+  console.log(topEconomicalBowlers[year]);
+  console.log(year);
+  res.json(tryFetch)
+  }
+})
+
+app.get('/f', function(req, res){
+  console.log(req.query.season);
+  
+})
 
 app.use(express.static(path.join(__dirname,'./public')))
 
