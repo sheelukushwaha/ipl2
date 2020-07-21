@@ -9,14 +9,13 @@ function showData() {
   const season = document.getElementById("seasons1").value;
     fetch("/e?season="+season)
       .then(r => r.json())
-      .then(response=> {visualizeExtraRunsConcededByEachTeam(response)});
+      .then(response=> {visualizeExtraRunsConcededByEachTeam(response, season)});
 } 
 
-function visualizeExtraRunsConcededByEachTeam(extraRunsConcededByEachTeam){
-  const season = Object.keys(extraRunsConcededByEachTeam);
+function visualizeExtraRunsConcededByEachTeam(extraRunsConcededByEachTeam, season){
   const seriesData = [];
-  for (let year in extraRunsConcededByEachTeam[season]) {
-    seriesData.push([year, extraRunsConcededByEachTeam[season][year]]);
+  for (let year in extraRunsConcededByEachTeam) {
+    seriesData.push([year, extraRunsConcededByEachTeam[year]]);
   }
 
   Highcharts.chart("container_userInput", {
@@ -53,14 +52,13 @@ function showData1() {
   const year = document.getElementById("seasons2").value;
     fetch("/e?year="+year)
       .then(r => r.json())
-      .then(response=> {visualizeTopTenEconomicalBowlersPerYear(response)});
+      .then(response=> {visualizeTopTenEconomicalBowlersPerYear(response, year)});
 }
 
-function visualizeTopTenEconomicalBowlersPerYear(topTenEconomicalBowlersPerYear){
-  const season = Object.keys(topTenEconomicalBowlersPerYear);
+function visualizeTopTenEconomicalBowlersPerYear(topTenEconomicalBowlersPerYear, season){
   let seriesData = [];
-  for (let year in topTenEconomicalBowlersPerYear[season]) {
-    seriesData.push([year, topTenEconomicalBowlersPerYear[season][year].economuRate]);
+  for (let year in topTenEconomicalBowlersPerYear) {
+    seriesData.push([year, topTenEconomicalBowlersPerYear[year].economuRate]);
   }
   seriesData = seriesData.sort((a, b) => a[1] - b[1]).slice(0, 11);
 
