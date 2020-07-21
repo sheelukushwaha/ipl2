@@ -18,7 +18,9 @@ const JSON_OUTPUT_FILE_PATH = "./public/data.json";
 
 const app = express();
 const PORT = process.env.PORT || 2000
+
 let extraRuns={}, topEconomicalBowlers={};
+
 function main() {
     csv()
     .fromFile(MATCHES_FILE_PATH)
@@ -72,14 +74,11 @@ main();
 app.get('/e', function(req, res){
   if(req.query.season){
   const season=req.query.season;
-  var tryFetch = {[season]: extraRuns[season]};
-  res.json(tryFetch)
+  //var tryFetch = {[season]: extraRuns[season]};
+  res.json(extraRuns[season])
   }else{
   const year=req.query.year;
-  var tryFetch = {[year]: topEconomicalBowlers[year]};
-  console.log(topEconomicalBowlers[year]);
-  console.log(year);
-  res.json(tryFetch)
+  res.json(topEconomicalBowlers[year])
   }
 })
 
@@ -87,7 +86,6 @@ app.get('/f', function(req, res){
   console.log(req.query.season);
   
 })
-
 app.use(express.static(path.join(__dirname,'./public')))
 
 app.listen(PORT,()=>console.log(`listning at ${PORT}`))
