@@ -35,12 +35,12 @@ function visualizeExtraRunsConcededByEachTeam(extraRunsConcededByEachTeam, seaso
     yAxis: {
       min: 0,
       title: {
-        text: "Matches"
+        text: "Extra Runs"
       }
     },
     series: [
       {
-        name: season,
+        name: "Teams",
         data: seriesData
       }
     ]
